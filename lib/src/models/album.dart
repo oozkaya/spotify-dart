@@ -43,17 +43,27 @@ class AlbumSimple extends Object {
   Map<String, dynamic> toJson() => _$AlbumSimpleToJson(this);
 
   /// Helper function that unwraps the items from the paging object.
-  static Iterable<TrackSimple> _extractTracksFromPage(
-      Map<String, dynamic> json) {
-    if (json == null) {
+  static Iterable<TrackSimple> _extractTracks(dynamic json) {
+    if (json == null || json.isEmpty) {
       return [];
     }
-    return json.isEmpty
-        ? []
-        : Paging.fromJson(json)
-            .itemsNative
-            ?.map((trackJson) => TrackSimple.fromJson(trackJson));
+    var isPage = json is Map<String, dynamic>;
+    var iterable = isPage ? Paging.fromJson(json).itemsNative : json;
+    return iterable?.map((trackJson) => TrackSimple.fromJson(trackJson));
   }
+
+  /// Helper function that wraps the items to the paging object.
+  // static List<Map<String, dynamic>> _jsonTracksIntoPage(
+  //     Map<String, dynamic> json) {
+  //   if (json == null) {
+  //     return [];
+  //   }
+  //   return json.isEmpty
+  //       ? []
+  //       : Paging.fromJson(json)
+  //           .itemsNative
+  //           ?.map((trackJson) => TrackSimple.fromJson(trackJson));
+  // }
 
   /// The type of the album: one of "album", "single", or "compilation".
   @JsonKey(name: 'album_type')
@@ -103,7 +113,7 @@ class AlbumSimple extends Object {
   String uri;
 
   /// The tracks of this album.
-  @JsonKey(fromJson: _extractTracksFromPage)
+  @JsonKey(fromJson: _extractTracks)
   Iterable<TrackSimple> tracks;
 }
 

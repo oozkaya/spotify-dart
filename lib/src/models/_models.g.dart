@@ -53,8 +53,7 @@ Album _$AlbumFromJson(Map<String, dynamic> json) {
         _$DatePrecisionEnumMap, json['release_date_precision'])
     ..type = json['type'] as String
     ..uri = json['uri'] as String
-    ..tracks = AlbumSimple._extractTracksFromPage(
-        json['tracks'] as Map<String, dynamic>)
+    ..tracks = AlbumSimple._extractTracks(json['tracks'])
     ..copyrights = (json['copyrights'] as List)
         ?.map((e) =>
             e == null ? null : Copyright.fromJson(e as Map<String, dynamic>))
@@ -151,8 +150,7 @@ AlbumSimple _$AlbumSimpleFromJson(Map<String, dynamic> json) {
         _$DatePrecisionEnumMap, json['release_date_precision'])
     ..type = json['type'] as String
     ..uri = json['uri'] as String
-    ..tracks = AlbumSimple._extractTracksFromPage(
-        json['tracks'] as Map<String, dynamic>);
+    ..tracks = AlbumSimple._extractTracks(json['tracks']);
 }
 
 Map<String, dynamic> _$AlbumSimpleToJson(AlbumSimple instance) =>
